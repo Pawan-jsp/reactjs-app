@@ -22,7 +22,7 @@ pipeline{
         }
         stage("Dev Deploy"){
             steps{
-                sshagent(['docker-dev']) {
+                sshagent(['Docker_Server_ssh']) {
         
                     sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.4.28 docker rm -f react 2>/dev/null "
                     sh "ssh ubuntu@172.31.4.28 docker run -d -p 80:80 --name=react baggipawan/react-app:${currentBuild.number}"
