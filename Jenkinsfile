@@ -15,7 +15,7 @@ pipeline{
         stage("Docker Push"){
             steps{
                 withCredentials([string(credentialsId: 'Docker_Dev', variable: 'Docker_Dev')]) {
-                    sh "docker login -u ${docker_user} -p ${docker_password}"
+                    sh "docker login -u baggipawan -p ${Docker_Dev}"
                 }
                 sh "docker push baggipawan/react-app:${currentBuild.number}"
             }
