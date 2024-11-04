@@ -25,7 +25,7 @@ pipeline{
                 sshagent(['docker-dev']) {
         
                     sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.4.28 docker rm -f react 2>/dev/null "
-                    sh " ubuntu@172.31.4.28 docker run -d -p 80:80 --name=react baggipawan/react-app:${currentBuild.number}"
+                    sh "ssh ubuntu@172.31.4.28 docker run -d -p 80:80 --name=react baggipawan/react-app:${currentBuild.number}"
                 }
             }
         }
