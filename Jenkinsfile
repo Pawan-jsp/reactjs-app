@@ -9,23 +9,23 @@ pipeline{
         }
         stage("Docker Build"){
             steps{
-                sh "docker build -t kammana/react-app:${currentBuild.number} ."
+                sh "docker build -t baggipawan/react-app:${currentBuild.number} ."
             }
         }
         stage("Docker Push"){
             steps{
-                withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'docker_password', usernameVariable: 'docker_user')]) {
-                    sh "docker login -u ${docker_user} -p ${docker_password}"
+                withCredentials([string(credentialsId: 'Docker_Dev', variable: 'Docker_Dev')]) {
+                    sh "docker login -u baggipawan -p ${Docker_Dev}"
                 }
-                sh "docker push kammana/react-app:${currentBuild.number}"
+                sh "docker push baggipawan/react-app:${currentBuild.number}"
             }
         }
         stage("Dev Deploy"){
             steps{
-                sshagent(['docker-dev']) {
+                sshagent(['Docker_Server_ssh']) {
         
-                    sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.15.57 docker rm -f react 2>/dev/null "
-                    sh "ssh ec2-user@172.31.15.57 docker run -d -p 80:80 --name=react kammana/react-app:${currentBuild.number}"
+                    sh "ssh -o StrictHostKeyChecking=no ubuntu@13.127.1.247 docker rm -f react 2>/dev/null "
+                    sh "ssh ubuntu@13.127.1.247 docker run -d -p 80:80 --name=react baggipawan/react-app:${currentBuild.number}"
                 }
             }
         }
